@@ -6,20 +6,16 @@ pipeline {
     }
 
     stages {
-        stage('Clone Code') {
-            steps {
-                git url: 'https://github.com/spring-projects/spring-petclinic.git'
-            }
-        }
-
         stage('Build with Maven') {
             steps {
+                echo "🔧 Building the app..."
                 sh 'mvn clean install'
             }
         }
 
         stage('Run Tests') {
             steps {
+                echo "🧪 Running tests..."
                 sh 'mvn test'
             }
         }
@@ -27,7 +23,7 @@ pipeline {
 
     post {
         always {
-            echo '❌ Build failed.'
+            echo '✅ Pipeline completed.'
         }
     }
 }
