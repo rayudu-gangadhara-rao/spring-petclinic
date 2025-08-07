@@ -1,31 +1,32 @@
 pipeline {
     agent { label 'java-agent' }
 
+    environment {
+        MAVEN_HOME = '/usr/share/maven'
+    }
+
     stages {
         stage('Clone Code') {
             steps {
-                git url: 'https://github.com/rayudu-gangadhara-rao/spring-petclinic.git'
+                git url: 'https://github.com/spring-projects/spring-petclinic.git'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                sh 'mvn clean install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh './mvnw test'
+                sh 'mvn test'
             }
         }
     }
 
     post {
-        success {
-            echo '✅ Build completed successfully.'
-        }
-        failure {
+        always {
             echo '❌ Build failed.'
         }
     }
